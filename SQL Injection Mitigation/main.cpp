@@ -6,16 +6,63 @@
 //
 
 #include <iostream>
+#include <string>
 using namespace std;
 
 
 void display(string testString){
-   cout << testString + "\n\n";
+   cout << testString + "\n";
 }
 string genQuery(string username, string password){
    string authenticate = "SELECT authenticate FROM passwordList WHERE name='" + username + "' and passwd='" + password + "';";
    return authenticate;
 }
+
+//delete space here
+string toRemove(string str, string word)
+{
+
+  if (str.find (word) != string::npos)
+	{
+	  size_t p = -1;
+
+	  string tempWord = word + " ";
+	  while ((p = str.find (word)) != string::npos)
+	str.replace (p, tempWord.length (), "");
+
+	  tempWord = " " + word;
+	  while ((p = str.find (word)) != string::npos)
+	str.replace (p, tempWord.length (), "");
+	}
+
+  return str;
+}
+
+string genQueryWeak(string str)
+{
+  //You cannot use those words.
+  string filteredStr = "";
+
+  str = toRemove(str, " union ");
+  str = toRemove(str, " and ");
+  str = toRemove(str, " or ");
+
+
+  str = toRemove(str, " UNION ");
+  str = toRemove(str, " AND ");
+  str = toRemove(str, " OR ");
+
+
+  //Deleting ; space and -
+  for (int i = 0; i < str.length (); i++){
+   char ch = str[i];
+   if (ch != ';' && ch != ' ' && ch != '-'){
+	filteredStr += ch;
+   }
+  }
+  return filteredStr;
+}
+
 void testValid(){
    string validTestCases[5][2];
    validTestCases[0][0] = "name";
@@ -30,10 +77,16 @@ void testValid(){
    validTestCases[3][1] = "__Password__";
    validTestCases[4][1] = "987654321_anotherPassword";
    
-   cout << "Valid Input: \n\n";
-   
+   string testString;
+   cout << "\nValid Input: \n\n";
    for (int i = 0; i < 5; i++){
-	  string testString = genQuery(validTestCases[i][0], validTestCases[i][1]);
+	  testString = genQuery(validTestCases[i][0], validTestCases[i][1]);
+	  display(testString);
+   }
+   
+   cout << "\nWeak Mitigation - Valid Input: \n\n";
+   for (int i = 0; i < 5; i++){
+	  testString = genQuery(genQueryWeak(validTestCases[i][0]), genQueryWeak(validTestCases[i][1]));
 	  display(testString);
    }
 }
@@ -52,10 +105,16 @@ void testTautology(){
    tautologyVulnerabilities[3][1] = "__Password__' OR 'x'='x";
    tautologyVulnerabilities[4][1] = "987654321_anotherPassword' OR 'x'='x";
    
-   cout << "Tautology Attack: \n\n";
-   
+   string testString;
+   cout << "\nTautology Attack: \n\n";
    for (int i = 0; i < 5; i++){
-	  string testString = genQuery(tautologyVulnerabilities[i][0], tautologyVulnerabilities[i][1]);
+	  testString = genQuery(tautologyVulnerabilities[i][0], tautologyVulnerabilities[i][1]);
+	  display(testString);
+   }
+   
+   cout << "\nWeak Mitigation - Tautology Attack: \n\n";
+   for (int i = 0; i < 5; i++){
+	  testString = genQuery(genQueryWeak(tautologyVulnerabilities[i][0]), genQueryWeak(tautologyVulnerabilities[i][1]));
 	  display(testString);
    }
 }
@@ -74,10 +133,16 @@ void testUnion(){
    unionVulnerabilities[3][1] = "__Password__' UNION SELECT authenticate FROM passwordList";
    unionVulnerabilities[4][1] = "987654321_anotherPassword' UNION SELECT authenticate FROM passwordList";
    
-   cout << "Tautology Attack: \n\n";
-   
+   string testString;
+   cout << "\nUnion Attack: \n\n";
    for (int i = 0; i < 5; i++){
 	  string testString = genQuery(unionVulnerabilities[i][0], unionVulnerabilities[i][1]);
+	  display(testString);
+   }
+   
+   cout << "\nWeak Mitigation - Union Attack: \n\n";
+   for (int i = 0; i < 5; i++){
+	  testString = genQuery(genQueryWeak(unionVulnerabilities[i][0]), genQueryWeak(unionVulnerabilities[i][1]));
 	  display(testString);
    }
 }
@@ -96,10 +161,16 @@ void testAddState(){
    addStateVulnerabilities[3][1] = "__Password__'; INSERT INTO passwordList (name, passwd) VALUES 'Bob', '1234";
    addStateVulnerabilities[4][1] = "987654321_anotherPassword'; INSERT INTO passwordList (name, passwd) VALUES 'Bob', '1234";
    
-   cout << "Additional Statement Attack: \n\n";
-   
+   string testString;
+   cout << "\nAdditional Statement Attack: \n\n";
    for (int i = 0; i < 5; i++){
-	  string testString = genQuery(addStateVulnerabilities[i][0], addStateVulnerabilities[i][1]);
+	  testString = genQuery(addStateVulnerabilities[i][0], addStateVulnerabilities[i][1]);
+	  display(testString);
+   }
+   
+   cout << "\nWeak Mitigation - Additional Statement Attack: \n\n";
+   for (int i = 0; i < 5; i++){
+	  testString = genQuery(genQueryWeak(addStateVulnerabilities[i][0]), genQueryWeak(addStateVulnerabilities[i][1]));
 	  display(testString);
    }
 }
@@ -118,10 +189,16 @@ void testComment(){
    testCommentVulnerabilities[3][1] = "__Password__";
    testCommentVulnerabilities[4][1] = "987654321_anotherPassword";
    
-   cout << "Comment Attack: \n\n";
-   
+   string testString;
+   cout << "\nComment Attack: \n\n";
    for (int i = 0; i < 5; i++){
-	  string testString = genQuery(testCommentVulnerabilities[i][0], testCommentVulnerabilities[i][1]);
+	  testString = genQuery(testCommentVulnerabilities[i][0], testCommentVulnerabilities[i][1]);
+	  display(testString);
+   }
+   
+   cout << "\nWeak Mitigation - Comment Attack: \n\n";
+   for (int i = 0; i < 5; i++){
+	  testString = genQuery(genQueryWeak(testCommentVulnerabilities[i][0]), genQueryWeak(testCommentVulnerabilities[i][1]));
 	  display(testString);
    }
 }
