@@ -63,6 +63,37 @@ string genQueryWeak(string str)
   return filteredStr;
 }
 
+string verifyUsername(string username){
+   string usernameList[] = {"name", "123456789", "aVeryVeryVeryVeryVeryVeryVeryVeryLongUsername","__User__Name__", "name__123456789"};
+   string verifiedUsername = "";
+   for (int i = 0; i < 5; i++){
+	  if (usernameList[i] == username){
+		 verifiedUsername = username;
+	  }
+   }
+   return verifiedUsername;
+}
+
+string verifyPassword(string password){
+   string passwordList[] = {"password", "123456789", "aSecurePasswordIsALongPasswordSoLetsMakeItLong","__Password__", "987654321_anotherPassword"};
+   string verifiedPassword = "";
+   for (int i = 0; i < 5; i++){
+	  if (passwordList[i] == password){
+		 verifiedPassword = password;
+	  }
+   }
+   return verifiedPassword;
+}
+
+string genQueryStrong(string username, string password){
+   
+   string verifiedUsername = verifyUsername(username);
+   string verifiedPassword = verifyPassword(password);
+   
+   string authenticate = "SELECT authenticate FROM passwordList WHERE name='" + verifiedUsername + "' and passwd='" + verifiedPassword + "';";
+   return authenticate;
+}
+
 void testValid(){
    string validTestCases[5][2];
    validTestCases[0][0] = "name";
@@ -87,6 +118,12 @@ void testValid(){
    cout << "\nWeak Mitigation - Valid Input: \n\n";
    for (int i = 0; i < 5; i++){
 	  testString = genQuery(genQueryWeak(validTestCases[i][0]), genQueryWeak(validTestCases[i][1]));
+	  display(testString);
+   }
+   
+   cout << "\nStrong Mitigation - Valid Input: \n\n";
+   for (int i = 0; i < 5; i++){
+	  testString = genQueryStrong(validTestCases[i][0], validTestCases[i][1]);
 	  display(testString);
    }
 }
@@ -117,6 +154,12 @@ void testTautology(){
 	  testString = genQuery(genQueryWeak(tautologyVulnerabilities[i][0]), genQueryWeak(tautologyVulnerabilities[i][1]));
 	  display(testString);
    }
+   
+   cout << "\nStrong Mitigation - Tautology Attack: \n\n";
+   for (int i = 0; i < 5; i++){
+	  testString = genQueryStrong(tautologyVulnerabilities[i][0], tautologyVulnerabilities[i][1]);
+	  display(testString);
+   }
 }
 
 void testUnion(){
@@ -143,6 +186,12 @@ void testUnion(){
    cout << "\nWeak Mitigation - Union Attack: \n\n";
    for (int i = 0; i < 5; i++){
 	  testString = genQuery(genQueryWeak(unionVulnerabilities[i][0]), genQueryWeak(unionVulnerabilities[i][1]));
+	  display(testString);
+   }
+   
+   cout << "\nStrong Mitigation - Union Attack: \n\n";
+   for (int i = 0; i < 5; i++){
+	  testString = genQueryStrong(unionVulnerabilities[i][0], unionVulnerabilities[i][1]);
 	  display(testString);
    }
 }
@@ -173,6 +222,12 @@ void testAddState(){
 	  testString = genQuery(genQueryWeak(addStateVulnerabilities[i][0]), genQueryWeak(addStateVulnerabilities[i][1]));
 	  display(testString);
    }
+   
+   cout << "\nStrong Mitigation - Additional Statement Attack: \n\n";
+   for (int i = 0; i < 5; i++){
+	  testString = genQueryStrong(addStateVulnerabilities[i][0], addStateVulnerabilities[i][1]);
+	  display(testString);
+   }
 }
 
 void testComment(){
@@ -199,6 +254,11 @@ void testComment(){
    cout << "\nWeak Mitigation - Comment Attack: \n\n";
    for (int i = 0; i < 5; i++){
 	  testString = genQuery(genQueryWeak(testCommentVulnerabilities[i][0]), genQueryWeak(testCommentVulnerabilities[i][1]));
+	  display(testString);
+   }
+   cout << "\nStrong Mitigation - Comment Attack: \n\n";
+   for (int i = 0; i < 5; i++){
+	  testString = genQueryStrong(testCommentVulnerabilities[i][0], testCommentVulnerabilities[i][1]);
 	  display(testString);
    }
 }
