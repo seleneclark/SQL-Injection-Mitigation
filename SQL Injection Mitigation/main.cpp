@@ -18,7 +18,6 @@ string genQuery(string username, string password){
    return authenticate;
 }
 
-//delete space here
 string toRemove(string str, string word)
 {
 
@@ -136,11 +135,11 @@ void testTautology(){
    tautologyVulnerabilities[3][0] = "__User__Name__";
    tautologyVulnerabilities[4][0] = "name__123456789";
    
-   tautologyVulnerabilities[0][1] = "password' OR 'x'='x";
-   tautologyVulnerabilities[1][1] = "123456789' OR 'x'='x";
-   tautologyVulnerabilities[2][1] = "aSecurePasswordIsALongPasswordSoLetsMakeItLong' OR 'x'='x";
-   tautologyVulnerabilities[3][1] = "__Password__' OR 'x'='x";
-   tautologyVulnerabilities[4][1] = "987654321_anotherPassword' OR 'x'='x";
+   tautologyVulnerabilities[0][1] = "blank' OR 'x'='x";
+   tautologyVulnerabilities[1][1] = "blank' OR 'x'='x";
+   tautologyVulnerabilities[2][1] = "blank' OR 'x'='x";
+   tautologyVulnerabilities[3][1] = "blank' OR 'x'='x";
+   tautologyVulnerabilities[4][1] = "blank' OR 'x'='x";
    
    string testString;
    cout << "\nTautology Attack: \n\n";
@@ -170,11 +169,11 @@ void testUnion(){
    unionVulnerabilities[3][0] = "__User__Name__";
    unionVulnerabilities[4][0] = "name__123456789";
    
-   unionVulnerabilities[0][1] = "password' UNION SELECT authenticate FROM passwordList";
-   unionVulnerabilities[1][1] = "123456789' UNION SELECT authenticate FROM passwordList";
-   unionVulnerabilities[2][1] = "aSecurePasswordIsALongPasswordSoLetsMakeItLong' UNION SELECT authenticate FROM passwordList";
-   unionVulnerabilities[3][1] = "__Password__' UNION SELECT authenticate FROM passwordList";
-   unionVulnerabilities[4][1] = "987654321_anotherPassword' UNION SELECT authenticate FROM passwordList";
+   unionVulnerabilities[0][1] = "blank' UNION SELECT authenticate FROM passwordList";
+   unionVulnerabilities[1][1] = "blank' UNION SELECT authenticate FROM passwordList";
+   unionVulnerabilities[2][1] = "blank' UNION SELECT authenticate FROM passwordList";
+   unionVulnerabilities[3][1] = "blank' UNION SELECT authenticate FROM passwordList";
+   unionVulnerabilities[4][1] = "blank' UNION SELECT authenticate FROM passwordList";
    
    string testString;
    cout << "\nUnion Attack: \n\n";
@@ -204,11 +203,11 @@ void testAddState(){
    addStateVulnerabilities[3][0] = "__User__Name__";
    addStateVulnerabilities[4][0] = "name__123456789";
    
-   addStateVulnerabilities[0][1] = "password'; INSERT INTO passwordList (name, passwd) VALUES 'Bob', '1234";
-   addStateVulnerabilities[1][1] = "123456789'; INSERT INTO passwordList (name, passwd) VALUES 'Bob', '1234";
-   addStateVulnerabilities[2][1] = "aSecurePasswordIsALongPasswordSoLetsMakeItLong'; INSERT INTO passwordList (name, passwd) VALUES 'Bob', '1234";
-   addStateVulnerabilities[3][1] = "__Password__'; INSERT INTO passwordList (name, passwd) VALUES 'Bob', '1234";
-   addStateVulnerabilities[4][1] = "987654321_anotherPassword'; INSERT INTO passwordList (name, passwd) VALUES 'Bob', '1234";
+   addStateVulnerabilities[0][1] = "blank'; INSERT INTO passwordList (name, passwd) VALUES 'Selene', 'password";
+   addStateVulnerabilities[1][1] = "blank'; INSERT INTO passwordList (name, passwd) VALUES 'Jaren', 'newpassword";
+   addStateVulnerabilities[2][1] = "blank'; INSERT INTO passwordList (name, passwd) VALUES 'Landon', 'goodpassword";
+   addStateVulnerabilities[3][1] = "blank'; INSERT INTO passwordList (name, passwd) VALUES 'Michael', 'anypassword";
+   addStateVulnerabilities[4][1] = "blank'; INSERT INTO passwordList (name, passwd) VALUES 'Leandro', 'greatpassword";
    
    string testString;
    cout << "\nAdditional Statement Attack: \n\n";
@@ -232,17 +231,17 @@ void testAddState(){
 
 void testComment(){
    string testCommentVulnerabilities[5][2];
-   testCommentVulnerabilities[0][0] = "Root'; --";
-   testCommentVulnerabilities[1][0] = "Root'; --";
-   testCommentVulnerabilities[2][0] = "Root'; --";
-   testCommentVulnerabilities[3][0] = "Root'; --";
-   testCommentVulnerabilities[4][0] = "Root'; --";
+   testCommentVulnerabilities[0][0] = "name'; --";
+   testCommentVulnerabilities[1][0] = "123456789'; --";
+   testCommentVulnerabilities[2][0] = "aVeryVeryVeryVeryVeryVeryVeryVeryLongUsername'; --";
+   testCommentVulnerabilities[3][0] = "__User__Name__'; --";
+   testCommentVulnerabilities[4][0] = "name__123456789'; --";
    
-   testCommentVulnerabilities[0][1] = "password";
-   testCommentVulnerabilities[1][1] = "123456789";
-   testCommentVulnerabilities[2][1] = "aSecurePasswordIsALongPasswordSoLetsMakeItLong";
-   testCommentVulnerabilities[3][1] = "__Password__";
-   testCommentVulnerabilities[4][1] = "987654321_anotherPassword";
+   testCommentVulnerabilities[0][1] = "blank";
+   testCommentVulnerabilities[1][1] = "blank";
+   testCommentVulnerabilities[2][1] = "blank";
+   testCommentVulnerabilities[3][1] = "blank";
+   testCommentVulnerabilities[4][1] = "blank";
    
    string testString;
    cout << "\nComment Attack: \n\n";
